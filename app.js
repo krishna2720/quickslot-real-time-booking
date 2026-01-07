@@ -1,5 +1,5 @@
 const roasterUrl="https://jsonplaceholder.typicode.com/users?_limit=10";
-const clockUrl="https://corsproxy.io/?https://worldtimeapi.org/api/timezone/Asia/Kolkata";
+const clockUrl="https://corsproxy.io/?https://worldtimeapi.org/api/timezone/Asia/Kolkata";  
 const providerSelect=document.getElementById("providerSelect");
 const dateInput=document.getElementById("dateInput");
 const loadSlotsBtn=document.getElementById("loadSlotsBtn");
@@ -25,11 +25,11 @@ const notesInput = document.getElementById("notesInput");
 const state={
     providers:[],
     nowUtc:null,
-    target:null,
+    target:null,   
     bookings:[],
     pendingSlot:null
 }
-
+//limit of local storage is 5mb and session storage is 5mb.
 function saveBookings(){
     localStorage.setItem("quickslots-bookings",JSON.stringify(state.bookings));
      statBookings.textContent = state.bookings.length;
@@ -40,14 +40,14 @@ function readBookings(){
 
 }
 
-
+//API calling si done here for 10 provider name..
 async function fetchProviders() {
   providerSelect.disabled = true;
   providerSelect.innerHTML = `<option>Loading roster…</option>`;
 
   try {
     const res = await fetch(roasterUrl);
-    const data = await res.json();
+    const data = await res.json(); //convert data to json
 
     // Map API data to simple provider objects1
     state.providers = data.map((person) => ({
@@ -64,6 +64,8 @@ async function fetchProviders() {
     console.error(err);
   }
 }
+// fetchProviders();
+
 function renderProviderSelect() {
   providerSelect.disabled = false;
   providerSelect.innerHTML = `<option value="">Select provider</option>`;
@@ -76,7 +78,7 @@ function renderProviderSelect() {
     providerSelect.appendChild(opt);
   });
 }
-
+//api for time ..so thats time can come ..   
 async function syncClock() {
   try {
     const res = await fetch(clockUrl);
@@ -108,13 +110,14 @@ async function syncClock() {
 }
 syncClock();
 
-
+//fucntion so that we can avoid the slot which user wanted at time which has gone already i.e. previous time .. 
 function setMinDate() {
   const today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
   dateInput.min = today;
   dateInput.value = today;
 }
 
+//building the slots of 9-5 with half hour break . 
 function buildSlots(date) {
   const slots = [];
 
@@ -131,7 +134,7 @@ function buildSlots(date) {
   }));
 }
 
-
+//current time se less hai then disabled that slot .
 function isSlotDisabled(date, slotLabel) {
   // Convert slot + date → JS Date()
   const targetDate = new Date(`${date}T${slotLabel}:00+05:30`);
@@ -150,6 +153,8 @@ function isSlotDisabled(date, slotLabel) {
 
   return alreadyBooked;
 }
+
+//12 column grid system i.e. bootstrap used so that slot can be put into it..  
 function renderSlots(providerId, date) {
   const provider = state.providers.find((p) => p.id === Number(providerId));
 
@@ -161,7 +166,7 @@ function renderSlots(providerId, date) {
 
   // Save current selection in global state
   state.target = { providerId: provider.id, providerName: provider.name, date };
-
+  
   // Update header info
   slotsHeadline.textContent = `Slots for ${provider.name}`;
   slotMeta.textContent = `${new Date(
@@ -196,6 +201,7 @@ function renderSlots(providerId, date) {
   });
 }
 
+//opening modal by clicking on the prefered slots on particular time .
 function openModal(provider, date, slotLabel) {
   state.pendingSlot = { provider, date, slotLabel };
 
@@ -203,12 +209,13 @@ function openModal(provider, date, slotLabel) {
   confirmMeta.textContent = `${date} · ${slotLabel} IST`;
   notesInput.value = "";
 
-  confirmModal.show();
+  confirmModal.show(); //show the modal in ui 
 }
+
 
 confirmBtn.addEventListener("click", () => {
   if (!state.pendingSlot) return; // safety check
-
+ 
   const payload = {
     id: crypto.randomUUID(), // unique booking id
     providerId: state.pendingSlot.provider.id,
@@ -272,15 +279,13 @@ function cancelBooking(id) {
   state.bookings = state.bookings.filter((booking) => booking.id !== id);
   saveBookings();
   renderBookings();
-
   if (state.target) {
     renderSlots(state.target.providerId, state.target.date);
   }
 }
-
+//if we want to clear all bookings through clearAll booking button .
 clearBookingsBtn.addEventListener("click", () => {
   if (!state.bookings.length) return;
-
   if (confirm("Clear all stored bookings?")) {
     state.bookings = [];
     saveBookings();
@@ -288,13 +293,13 @@ clearBookingsBtn.addEventListener("click", () => {
     if (state.target) renderSlots(state.target.providerId, state.target.date);
   }
 });
-
+//if we dont select the Provider name then eror will be show 
 loadSlotsBtn.addEventListener("click", async () => {
   const providerId = providerSelect.value;
   const date = dateInput.value;
 
   if (!providerId || !date) {
-    alert("Select provider and date");
+    alert("Please Select provider and date ");
     return;
   }
 
@@ -306,24 +311,19 @@ refreshBtn.addEventListener("click", async () => {
   await syncClock();
   if (state.target) renderSlots(state.target.providerId, state.target.date);
 });
-
+//initialise the function .. 
 async function init() {
   readBookings();
   statBookings.textContent = state.bookings.length;
-
   setMinDate(); // prevent selecting past dates
-
   // Load providers + sync clock in parallel
   await Promise.all([fetchProviders(), syncClock()]);
-
   renderBookings();
 }
-
 document.addEventListener("DOMContentLoaded", init);
 
-//task that u need to do before submitting
+
 //u have to add a mail function or it can a dummy
-//change the ui but keep the functionality same..
 // add a login and signup page ui so user can login then book slot
 
 

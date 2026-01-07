@@ -1,224 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>QuickSlot | Real-Time Booking</title>
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
-  </head>
+</head>
 
-  <body>
-    <div class="container py-5">
-      <header class="header text-center mb-5">
-        <h1 class="display-4">Welcome to QuickSlot</h1>
-        <p class="lead">Your real-time booking solution</p>
-      </header>
-       <div class="row g-5 align-items-center">
-          <!-- Left Content -->
-          <div class="col-lg-7">
-            <h1 class="qs-title mb-3">
-              Book Smarter.<br />
-              Sync Instantly.<br />
-              <span class="gradient-text">Real-Time Scheduling.</span>
-            </h1>
+<body class="bg-light">
+    <div class="hero-orchestrator">
+        <div class="container">
+            <header class="text-center mb-5">
+                <div class="badge rounded-pill bg-white text-success px-3 py-2 mb-3 shadow-sm animate-pulse">
+                    <i class="bi bi-clock-history me-1"></i> System Online: UTC Sync
+                </div>
+                <h1 class="display-4 fw-bold mb-3">
+                    Real-Time <span class="highlight">QuickSlot</span> Booking System
+                </h1>
+                <p class="mx-auto opacity-75 fs-5" style="max-width: 700px;">
+                    Experience seamless scheduling with our network-synced orchestrator. Instant provider rosters and live updates.
+                </p>
+            </header>
 
-            <p class="qs-subtitle mb-4">
-              Live provider rosters, network-time synced slots, conflict-free
-              bookings, and real-time orchestration - all wrapped in a seamless
-              interface.
-            </p>
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-7">
+                    <div class="stats-inner h-100 d-flex justify-content-around align-items-center p-4">
+                        <div class="qs-stat text-center">
+                            <div class="label opacity-75 small fw-bold text-uppercase mb-1">Providers</div>
+                            <div class="value display-6 fw-bold" id="statProviders">—</div>
+                        </div>
+                        <div class="qs-stat text-center border-start border-white border-opacity-25 ps-4">
+                            <div class="label opacity-75 small fw-bold text-uppercase mb-1">Booked</div>
+                            <div class="value display-6 fw-bold" id="statBookings">0</div>
+                        </div>
+                        <div class="qs-stat text-center border-start border-white border-opacity-25 ps-4">
+                            <div class="label opacity-75 small fw-bold text-uppercase mb-1">UTC Clock</div>
+                            <div class="value-small fs-4 fw-bold font-monospace" id="statClock">syncing…</div>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="d-flex flex-wrap gap-4">
-              <div class="qs-stat">
-                <div class="label">Providers</div>
-                <div class="value" id="statProviders">—</div>
-              </div>
-              <div class="qs-stat">
-                <div class="label">Booked</div>
-                <div class="value" id="statBookings">0</div>
-              </div>
-              <div class="qs-stat">
-                <div class="label">UTC Clock</div>
-                <div class="value-small" id="statClock">syncing…</div>
-              </div>
+                <div class="col-lg-5">
+                    <div class="qs-panel p-4 h-100 shadow-lg border-0">
+                        <p class="small fw-bold text-uppercase text-secondary mb-3">Live Sync Status</p>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="qs-online-dot"></div>
+                            <span class="fw-bold text-dark" id="lastSync">Awaiting sync…</span>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            Slot freshness powered by <strong>WorldTime API</strong>. Bookings saved locally.
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <!-- Right Panel -->
-          <div class="col-lg-5">
-            <div class="qs-panel p-4">
-              <p class="small fw-semibold text-uppercase text-secondary mb-2">
-                Live Sync Status
-              </p>
-
-              <div class="d-flex align-items-center gap-3 mb-3">
-                <div class="qs-online-dot"></div>
-                <span class="small text-dark" id="lastSync"
-                  >Awaiting sync…</span
-                >
-              </div>
-
-              <p class="small text-muted mb-0">
-                Providers fetched from JSONPlaceholder. Slot freshness powered
-                by WorldTime API. Bookings saved locally for demo mode.
-              </p>
-            </div>
-          </div>
         </div>
-      <div class="row g-4">
-        <!-- LEFT: Search Orchestrator -->
-        <div class="col-lg-5">
-          <div class="card h-100">
-            <div class="card-body p-4">
-              <div
-                class="d-flex justify-content-between align-items-center mb-3"
-              >
-                <div>
-                  <p class="text-uppercase small mb-1 text-secondary">
-                    Orchestrator
-                  </p>
-                  <h2 class="h4 mb-0">Search Availability</h2>
-                </div>
-                <button id="refreshBtn" class="btn btn-outline-primary btn-sm">
-                  <i class="bi bi-arrow-repeat"></i>
-                </button>
-              </div>
+    </div>
 
-              <div class="vstack gap-3">
-                <div>
-                  <label class="form-label">Provider</label>
-                  <select id="providerSelect" class="form-select" disabled>
-                    <option>Loading roster…</option>
-                  </select>
+    <div class="container main-content">
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold mb-0">Orchestrator</h4>
+                            <button id="refreshBtn" class="btn btn-outline-primary btn-sm rounded-circle">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </div>
+                        <div class="vstack gap-4">
+                            <div>
+                                <label class="form-label small fw-bold text-secondary">SELECT PROVIDER</label>
+                                <select id="providerSelect" class="form-select border-0 bg-light py-2" disabled>
+                                    <option>Loading roster…</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label small fw-bold text-secondary">TARGET DATE</label>
+                                <input type="date" id="dateInput" class="form-control border-0 bg-light py-2" />
+                            </div>
+                            <button id="loadSlotsBtn" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm py-3 mt-2">
+                                <i class="bi bi-search me-2"></i>Fetch Slots
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-                <div>
-                  <label class="form-label">Date</label>
-                  <input type="date" id="dateInput" class="form-control" />
-                </div>
-
-                <button
-                  id="loadSlotsBtn"
-                  class="btn btn-primary btn-lg fw-semibold"
-                >
-                  <i class="bi bi-search"></i> Fetch Slots
-                </button>
-              </div>
             </div>
-          </div>
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 mb-4 p-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold mb-0" id="slotsHeadline">Select provider + date</h4>
+                            <span class="badge bg-light text-dark fw-normal" id="slotMeta"></span>
+                        </div>
+                        <div id="slotsGrid" class="row g-3">
+                            <div class="col-12 text-center text-secondary py-5">
+                                <i class="bi bi-calendar2-x display-4 opacity-25"></i>
+                                <p class="mt-2">No data fetched yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 p-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h4 class="fw-bold mb-0">My Schedule</h4>
+                            <button id="clearBookingsBtn" class="btn btn-link text-danger text-decoration-none btn-sm fw-bold">Clear All</button>
+                        </div>
+                        <div id="bookingsList" class="vstack gap-3">
+                            <div class="text-secondary small">No active bookings.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- RIGHT: Slots + Bookings -->
-        <div class="col-lg-7">
-          <!-- Live Slots -->
-          <div class="card mb-4">
-            <div class="card-body p-4">
-              <div
-                class="d-flex justify-content-between align-items-center mb-3"
-              >
-                <div>
-                  <p class="text-uppercase small mb-1 text-secondary">
-                    Live Slots
-                  </p>
-                  <h2 class="h4 mb-0" id="slotsHeadline">
-                    Select provider + date
-                  </h2>
-                </div>
-                <span class="small text-muted" id="slotMeta"></span>
-              </div>
-
-              <div id="slotsGrid" class="row g-3">
-                <div class="col-12 text-center text-secondary">
-                  No data yet.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- My Bookings -->
-          <div class="card">
-            <div class="card-body p-4">
-              <div
-                class="d-flex justify-content-between align-items-center mb-3"
-              >
-                <div>
-                  <p class="text-uppercase small mb-1 text-secondary">
-                    Upcoming
-                  </p>
-                  <h2 class="h4 mb-0">My Bookings</h2>
-                </div>
-                <button
-                  id="clearBookingsBtn"
-                  class="btn btn-outline-danger btn-sm"
-                >
-                  Clear All
-                </button>
-              </div>
-
-              <div id="bookingsList" class="vstack gap-3">
-                <div class="text-secondary small">No bookings yet.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div>
-              <p class="text-uppercase small text-secondary mb-1">
-                Confirm Slot
-              </p>
-              <h5 class="modal-title" id="confirmTitle">—</h5>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="confirmTitle">—</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <p id="confirmMeta" class="text-secondary small mb-3"></p>
+                    <textarea id="notesInput" class="form-control border-0 bg-light p-3" rows="3" placeholder="Add optional notes..."></textarea>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light fw-bold px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button id="confirmBtn" class="btn btn-primary fw-bold px-4">Book Slot</button>
+                </div>
             </div>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-
-          <div class="modal-body">
-            <p id="confirmMeta" class="text-secondary small mb-3"></p>
-            <textarea
-              id="notesInput"
-              class="form-control"
-              rows="3"
-              placeholder="Notes for the provider (optional)"
-            ></textarea>
-          </div>
-
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button id="confirmBtn" class="btn btn-primary">Book Slot</button>
-          </div>
         </div>
-      </div>
     </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
-    </body>
+</body>
 </html>
