@@ -321,9 +321,73 @@ async function init() {
   renderBookings();
 }
 document.addEventListener("DOMContentLoaded", init);
+/**
+ * dummy function to simulate sending a confirmation email
+ * In a real app, this would be an API call to a backend or EmailJS
+ */
+async function sendConfirmationEmail(booking) {
+    console.log(`%c 📧 System: Preparing confirmation for ${booking.provider}...`, 'color: #1a7f5a; font-weight: bold;');
+
+    // Simulate network delay
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log("-----------------------------------------");
+            console.log(`CONFIRMATION EMAIL SENT TO: user@example.com`);
+            console.log(`SUBJECT: Booking Confirmed - ${booking.provider}`);
+            console.log(`BODY: Your appointment on ${booking.date} at ${booking.slot} is confirmed.`);
+            console.log("-----------------------------------------");
+            
+            showEmailToast(booking.provider);
+            resolve({ success: true, timestamp: new Date() });
+        }, 1500); 
+    });
+}
+
+function showEmailToast(providerName) {
+    const toastDiv = document.createElement("div");
+    toastDiv.style = `
+        position: fixed; bottom: 20px; right: 20px; 
+        background: #1a7f5a; color: white; padding: 12px 20px; 
+        border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999; display: flex; align-items: center; gap: 10px;
+        animation: slideIn 0.3s ease-out;
+    `;
+    toastDiv.innerHTML = `<i class="bi bi-envelope-check"></i> Confirmation email sent for ${providerName}!`;
+    
+    document.body.appendChild(toastDiv);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toastDiv.style.opacity = '0';
+        toastDiv.style.transition = 'opacity 0.5s ease';
+        setTimeout(() => toastDiv.remove(), 500);
+    }, 3000);
+}
+confirmBtn.addEventListener("click", async () => { // Added async here
+  if (!state.pendingSlot) return;
+
+  const payload = {
+    id: crypto.randomUUID(),
+    providerId: state.pendingSlot.provider.id,
+    provider: state.pendingSlot.provider.name,
+    specialty: state.pendingSlot.provider.specialty,
+    date: state.pendingSlot.date,
+    slot: state.pendingSlot.slotLabel,
+    notes: notesInput.value.trim(),
+  };
+
+  state.bookings.push(payload);
+
+  saveBookings();
+  renderSlots(state.pendingSlot.provider.id, state.pendingSlot.date);
+  renderBookings();
+    // Trigger the dummy mail
+  await sendConfirmationEmail(payload); 
+  
+  confirmModal.hide();
+});
 
 
-//u have to add a mail function or it can a dummy
 // add a login and signup page ui so user can login then book slot
 
 

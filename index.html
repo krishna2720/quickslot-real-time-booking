@@ -59,66 +59,92 @@
         </div>
     </div>
 
-    <div class="container main-content">
-        <div class="row g-4">
-            <div class="col-lg-5">
-                <div class="card border-0 shadow-sm rounded-4 h-100 p-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="fw-bold mb-0">Orchestrator</h4>
-                            <button id="refreshBtn" class="btn btn-outline-primary btn-sm rounded-circle">
-                                <i class="bi bi-arrow-repeat"></i>
-                            </button>
+    <div class="container main-content mt-n5">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4 pb-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4 class="fw-bold mb-0 text-dark">Orchestrator</h4>
+                            <p class="text-muted small mb-0">Find your local specialist</p>
                         </div>
-                        <div class="vstack gap-4">
-                            <div>
-                                <label class="form-label small fw-bold text-secondary">SELECT PROVIDER</label>
-                                <select id="providerSelect" class="form-select border-0 bg-light py-2" disabled>
+                        <button id="refreshBtn" class="btn btn-outline-primary btn-sm rounded-circle shadow-sm" title="Sync Roster">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card-body p-4 pt-3">
+                    <div class="vstack gap-4">
+                        <div class="input-group-custom">
+                            <label class="form-label small fw-bold text-secondary mb-2 tracking-wider">SELECT PROVIDER</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-person-badge text-primary"></i></span>
+                                <select id="providerSelect" class="form-select border-0 bg-light py-2 shadow-none" disabled>
                                     <option>Loading roster…</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="form-label small fw-bold text-secondary">TARGET DATE</label>
-                                <input type="date" id="dateInput" class="form-control border-0 bg-light py-2" />
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label class="form-label small fw-bold text-secondary mb-2 tracking-wider">TARGET DATE</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi bi-calendar-event text-primary"></i></span>
+                                <input type="date" id="dateInput" class="form-control border-0 bg-light py-2 shadow-none" />
                             </div>
-                            <button id="loadSlotsBtn" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm py-3 mt-2">
-                                <i class="bi bi-search me-2"></i>Fetch Slots
-                            </button>
+                        </div>
+
+                        <button id="loadSlotsBtn" class="btn btn-primary btn-lg w-100 fw-bold shadow py-3 mt-2 border-0">
+                            <i class="bi bi-search me-2"></i>Fetch Available Slots
+                        </button>
+                    </div>
+                </div>
+                <div class="card-footer bg-light border-0 text-center py-2">
+                    <span class="x-small text-muted"><i class="bi bi-shield-check me-1"></i> Conflict-free booking enabled</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg rounded-4 mb-4 overflow-hidden">
+                <div class="card-header bg-white border-0 pt-4 px-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="fw-bold mb-0" id="slotsHeadline">Available Windows</h4>
+                        <span class="badge bg-soft-success text-success fw-bold px-3 py-2" id="slotMeta">Ready for Sync</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div id="slotsGrid" class="row g-3">
+                        <div class="col-12 text-center py-5">
+                            <div class="mb-3">
+                                <i class="bi bi-calendar2-week display-3 text-light"></i>
+                            </div>
+                            <h5 class="text-secondary fw-light">No slots orchestrated yet</h5>
+                            <p class="text-muted small">Select a provider and date to see live availability.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7">
-                <div class="card border-0 shadow-sm rounded-4 mb-4 p-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="fw-bold mb-0" id="slotsHeadline">Select provider + date</h4>
-                            <span class="badge bg-light text-dark fw-normal" id="slotMeta"></span>
-                        </div>
-                        <div id="slotsGrid" class="row g-3">
-                            <div class="col-12 text-center text-secondary py-5">
-                                <i class="bi bi-calendar2-x display-4 opacity-25"></i>
-                                <p class="mt-2">No data fetched yet.</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-journal-check me-2 text-primary"></i>My Schedule</h4>
+                    <button id="clearBookingsBtn" class="btn btn-link text-danger text-decoration-none btn-sm fw-bold hover-underline">
+                        <i class="bi bi-trash3 me-1"></i>Clear All
+                    </button>
                 </div>
-
-                <div class="card border-0 shadow-sm rounded-4 p-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h4 class="fw-bold mb-0">My Schedule</h4>
-                            <button id="clearBookingsBtn" class="btn btn-link text-danger text-decoration-none btn-sm fw-bold">Clear All</button>
-                        </div>
-                        <div id="bookingsList" class="vstack gap-3">
-                            <div class="text-secondary small">No active bookings.</div>
+                <div class="card-body p-4 pt-2">
+                    <div id="bookingsList" class="vstack gap-3">
+                        <div class="text-center py-4 border rounded-3 border-dashed">
+                            <p class="text-muted small mb-0 italic">No active bookings found in your session.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

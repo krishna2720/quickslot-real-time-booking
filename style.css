@@ -24,7 +24,10 @@ body {
     color: var(--accent-lime);
     font-weight: 800;
 }
-
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
 /* Stats Inside Header */
 .stats-inner {
     background: rgba(255, 255, 255, 0.1);
