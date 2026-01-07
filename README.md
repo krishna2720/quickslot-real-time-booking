@@ -1,71 +1,42 @@
-QuickSlot – Real-Time Slot Booking & Calendar Orchestration
-Overview
+🚀 QuickSlot – Real-Time Booking System
 
-QuickSlot is a mini-project designed for real-time slot booking and management. It provides a seamless interface to book, sync, and manage available slots for providers while keeping track of live bookings, availability, and UTC clock time. The system stores data locally using browser storage for demo purposes, simulating real-time orchestration.
+Live Demo:
+👉 https://quickslot-real-time-booking-wheat.vercel.app
 
-With QuickSlot, users can:
+QuickSlot is a real-time slot booking web application that allows users to view available providers, check live time (UTC-based), and book slots instantly.
+The system uses UTC clock synchronization to avoid time mismatch issues and localStorage to simulate real-time booking persistence.
 
-Fetch available slots from providers.
+📌 Features
 
-View live UTC time and booking status.
+⏱ UTC-Based Real-Time Clock
+Ensures consistent time across all users regardless of location.
 
-Store and manage bookings in real-time.
+📅 Live Slot Booking
+Book available slots instantly with real-time UI updates.
 
-Sync provider availability with local storage.
-Features
+💾 LocalStorage Persistence
+Booked slots remain saved even after page refresh.
 
-Live Provider Data
+👨‍⚕️ Provider Selection System
+Users can choose from multiple providers dynamically.
 
-Displays the number of available providers.
+🔄 Instant UI Synchronization
+Slot availability updates without manual refresh.
 
-Shows real-time UTC clock.
+🌐 Deployed on Vercel
+Fast, reliable, and production-ready deployment.
 
-Slot Booking
+How It Works ??? 
 
-Fetch slots for a specific provider and date.
+1.The system fetches current UTC time.
 
-Book available slots and save them locally.
+2.Available slots are generated based on the selected provider.
 
-View upcoming bookings in a dedicated section.
+3.Once a slot is booked:
 
-Local Storage Integration
+4.It gets stored in localStorage
 
-Bookings and slot selections are saved in browser local storage.
+5.UI updates instantly
 
-Demo-friendly setup without the need for a backend.
+6.Already booked slots are disabled to prevent double booking
 
-Real-Time Sync
-
-Slots are updated dynamically.
-
-Fallback mechanism ensures data consistency.
-
-Tech Stack
-
-Frontend: HTML, CSS, JavaScript
-
-Data Storage: LocalStorage (for demo)
-
-Real-Time Features: JavaScript timers for UTC clock & slot updates
-
-Usage
-
-Open index.html in your browser.
-
-Check the Providers, Booked slots, and UTC Clock at the top.
-
-Select a provider and date in the "Search Availability" section.
-
-Click Fetch Slots to view available slots.
-
-Book a slot and check your My Bookings section.
-
-Future Enhancements
-
-Integrate with backend APIs for real provider data.
-
-Enable multi-user real-time synchronization using WebSockets.
-
-Add notifications for booked slots.
-
-Support for multiple time zones and dynamic slot refreshing.
