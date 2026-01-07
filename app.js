@@ -213,27 +213,7 @@ function openModal(provider, date, slotLabel) {
 }
 
 
-confirmBtn.addEventListener("click", () => {
-  if (!state.pendingSlot) return; // safety check
- 
-  const payload = {
-    id: crypto.randomUUID(), // unique booking id
-    providerId: state.pendingSlot.provider.id,
-    provider: state.pendingSlot.provider.name,
-    specialty: state.pendingSlot.provider.specialty,
-    date: state.pendingSlot.date,
-    slot: state.pendingSlot.slotLabel,
-    notes: notesInput.value.trim(),
-  };
 
-  state.bookings.push(payload);
-
-  saveBookings(); // persist
-  renderSlots(state.pendingSlot.provider.id, state.pendingSlot.date);
-  renderBookings();
-  sendConfirmationEmail(payload); // optional API
-  confirmModal.hide();
-});
 
 function renderBookings() {
   bookingsList.innerHTML = "";
@@ -388,6 +368,5 @@ confirmBtn.addEventListener("click", async () => { // Added async here
 });
 
 
-// add a login and signup page ui so user can login then book slot
 
 
